@@ -448,6 +448,14 @@ public class GameDayChannel extends Thread {
 		}
 
 		// Regular message
+		if (event.getPeriod().getType() == GamePeriod.Type.OVERTIME) {
+			message.append("Overtime Goal!\n");
+		}
+
+		if (event.getPeriod().getType() == GamePeriod.Type.SHOOTOUT) {
+			message.append("Shootout goal: ");
+		}
+		
 		if (strength == GameEventStrength.EVEN) {
 			message.append(
 					String.format("%s goal by **%s**!", event.getTeam().getLocation(), players.get(0).getFullName()));
@@ -461,6 +469,12 @@ public class GameDayChannel extends Thread {
 		if (players.size() > 2) {
 			message.append(String.format(", %s", players.get(2).getFullName()));
 		}
+
+		if (event.getPeriod().getType() == GamePeriod.Type.REGULAR) {
+			message.append(
+					String.format(" (%s Period at %s)", event.getPeriod().getOrdinalNum(), event.getPeriodTime()));
+		}
+
 		return message.toString();
 	}
 
@@ -516,12 +530,7 @@ public class GameDayChannel extends Thread {
 
 		if (!nextGames.isEmpty()) {
 			ZoneId timeZone = nhlBot.getPreferencesManager().getGuildPreferences(guild.getLongID()).getTimeZone();
-			if (nextGames.size() > 1) {
-
-			} else {
-				message += "\nThe next game is: "
-						+ getGameDayChannel(nextGames.get(0)).getDetailsMessage(timeZone);
-			}
+			message += "\nThe next game is: " + getGameDayChannel(nextGames.get(0)).getDetailsMessage(timeZone);
 		}
 		return message;
 	}
