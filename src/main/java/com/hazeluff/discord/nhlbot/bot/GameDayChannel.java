@@ -470,9 +470,10 @@ public class GameDayChannel extends Thread {
 			message.append(String.format(", %s", players.get(2).getFullName()));
 		}
 
-		if (event.getPeriod().getType() == GamePeriod.Type.REGULAR) {
+		if (event.getPeriod().getType() == GamePeriod.Type.REGULAR
+				|| event.getPeriod().getType() == GamePeriod.Type.OVERTIME) {
 			message.append(
-					String.format(" (%s Period at %s)", event.getPeriod().getOrdinalNum(), event.getPeriodTime()));
+					String.format(" (%s at %s)", event.getPeriod().getDisplayValue(), event.getPeriodTime()));
 		}
 
 		return message.toString();
